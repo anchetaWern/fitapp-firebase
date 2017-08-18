@@ -1,0 +1,95 @@
+<Page 
+    xmlns="http://schemas.nativescript.org/tns.xsd" 
+    xmlns:maps="nativescript-google-maps-sdk"
+    navigatingTo="onNavigatingTo" 
+    class="page">
+   
+    <Page.actionBar>
+        <ActionBar title="FitApp" icon="" class="action-bar">
+        </ActionBar>
+    </Page.actionBar>
+  
+    <TabView>
+        <TabView.items>
+            <TabViewItem title="Tracking">
+                <TabViewItem.view>
+                    <StackLayout class="p-20">
+                        <Button text="{{ getButtonLabel() }}" tap="{{ toggleTracking }}" class="{{ getButtonStyle() }}"/>
+                        <Label text="{{ distance }}" class="h2 text-center" textWrap="true"/>
+                        <Label text="{{ steps }}" class="h2 text-center" textWrap="true"/>
+
+                        <maps:mapView latitude="{{ latitude }}" longitude="{{ longitude }}" zoom="{{ zoom }}" mapReady="{{ onMapReady }}" />
+                    </StackLayout>
+                </TabViewItem.view>
+            </TabViewItem>
+
+            <TabViewItem title="Walks">
+                <TabViewItem.view>
+                    <StackLayout>
+                        
+                        <Label text="Please get your ass off the couch and start walking" class="heading" textWrap="true" visibility="{{ has_walks ? 'collapsed' : 'visible' }}" />
+                        <StackLayout visibility="{{ has_walks ? 'visible' : 'collapsed' }}">
+                            <Label text="Walks for this month" class="heading" textWrap="true" />
+                            <GridLayout columns="2*,*,*" rows="auto" class="item item-header">
+                                <Label text="Time" textWrap="true" row="0" col="0"/>
+                                <Label text="Distance" textWrap="true" row="0" col="1" />
+                                <Label text="Steps" textWrap="true" row="0" col="2" />
+                            </GridLayout>
+                            <ListView items="{{ walks }}">   
+                                <ListView.itemTemplate>
+                                    <GridLayout columns="2*,*,*" rows="auto" class="item item-row">
+                                        <Label text="{{ start + ' - ' + end }}" textWrap="true" row="0" col="0"/>
+                                        <Label text="{{ distance }}" textWrap="true" row="0" col="1" />
+                                        <Label text="{{ steps }}" textWrap="true" row="0" col="2" />
+                                    </GridLayout>
+                                </ListView.itemTemplate>
+                            </ListView>
+                            <Button text="Clear Data" tap="{{ clearData }}" class="bg-danger" />
+                        </StackLayout>
+                        
+                    </StackLayout>
+                </TabViewItem.view>
+            </TabViewItem>
+
+            <TabViewItem title="Social">
+                <TabViewItem.view>
+                    <StackLayout>
+                        <StackLayout width="140" class="profile p-20" visibility="{{ is_loggedin ? 'visible' : 'collapsed' }}">
+                            <Image src="{{ profile_photo }}" stretch="aspectFit" />
+                            <Label text="{{ user_name }}" textWrap="true" />
+                            <Button text="Logout" tap="{{ logout }}" 
+                            class="btn-logout" />
+                        </StackLayout>
+                        
+                        <StackLayout visibility="{{ is_loggedin && friends_data ? 'visible' : 'collapsed' }}">
+                            <Label text="Leaderboard" class="heading" textWrap="true" />
+                            <GridLayout columns="2*,*,*" rows="auto" class="item item-header">
+                                <Label text="Name" textWrap="true" row="0" col="0"/>
+                                <Label text="Distance" textWrap="true" row="0" col="1" />
+                                <Label text="Steps" textWrap="true" row="0" col="2" />
+                            </GridLayout>
+                            <ListView items="{{ friends_data }}">   
+                                <ListView.itemTemplate>
+                                    <GridLayout columns="2*,*,*" rows="auto" class="item item-row">
+                                        <Label text="{{ user_name }}" textWrap="true" row="0" col="0"/>
+                                        <Label text="{{ distance }}" textWrap="true" row="0" col="1" />
+                                        <Label text="{{ steps }}" textWrap="true" row="0" col="2" />
+                                    </GridLayout>
+                                </ListView.itemTemplate>
+                            </ListView>
+                        </StackLayout>
+
+                        <StackLayout class="p-20">
+                            <Button text="Login with Facebook" tap="{{ loginFacebook }}" 
+                            class="btn-facebook" 
+                            visibility="{{ is_loggedin ? 'collapsed' : 'visible' }}" />
+                        </StackLayout>
+                        
+                    </StackLayout>
+                </TabViewItem.view>
+            </TabViewItem>
+
+        </TabView.items>
+    </TabView>
+
+</Page>
